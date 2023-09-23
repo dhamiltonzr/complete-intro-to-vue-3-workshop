@@ -6,5 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <div id="app">
+      <h1>Famous Cougs</h1>
+      <h2>Quarterbacks</h2>
+      <ul>
+        <li v-for="quarterback in quarterbackList">
+          {{quarterback.name}} - NFL team: {{quarterback.nflTeam}}
+        </li>
+      </ul>
+      <h2>Running Backs</h2>
+      <ul>
+        <li v-for="runningBack in runningBackList">
+          {{runningBack.name}} - NFL team: {{runningBack.nflTeam}}
+        </li>
+      </ul>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      const app = createApp({
+        data: () => ({
+          quarterbackList: [
+            {
+              name: 'Drew Bledsoe',
+              nflTeam: 'New England'
+            },
+            {
+              name: 'Timm Rosenbach',
+              nflTeam: 'Arizona'
+            },
+            {
+              name: 'Jack Thompson',
+              nflTeam: 'Cincinnati'
+            }
+          ],
+          runningBackList: [
+            {
+              name: 'Michael Black',
+              nflTeam: 'None'
+            },
+            {
+              name: 'Kerry Porter',
+              nflTeam: 'Los Angeles Raiders'
+            },
+            {
+              name: 'Reuben Mayes',
+              nflTeam: 'New Orleans'
+            }
+          ]
+        })
+      });
+      app.mount('#app');
+    </script>
+  </body>
 </html>
