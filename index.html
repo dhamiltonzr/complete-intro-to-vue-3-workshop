@@ -1,75 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Avatar: The Last Airbender</title>
-  </head>
-  <body>
-    <div id="app">
-      <p v-if="characterList.length === 0">There are no characters</p>
-      <ul v-else-if="characterList.length % 2 === 0">
-        <li v-for="character in characterList">
-          <p>{{ character.name }}</p>
-          <button @click="favoriteCharacter(character)">⭐ Favorite</button>
-        </li>
-      </ul>
-      <h2>Favorite Characters</h2>
-      <ul v-if="favoriteList.length > 0">
-        <li v-for="character in favoriteList">{{ character }}</li>
-      </ul>
-      <p v-else>No favorite characters yet!</p>
-      <h2>New Character</h2>
-      <pre>{{ newCharacter }}</pre>
-      <label for="character-name">Name</label>
-      <input
-        type="text"
-        v-model="newCharacter.name"
-        @keyup.enter="addNewCharacter"
-      />
-      <p>
-        <span v-for="(character, index) in characterList"
-          >{{ character.name }}{{ index === characterList.length - 1 ? '' : ', '
-          }}
-        </span>
-      </p>
-      <p v-else>There are odd characters!</p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+<body>
+<div id="app">
+  <h1>Famous Cougs</h1>
+  <h2>Quarterbacks - {{favoriteQuarterbackPercentage}}% Favorites</h2>
+  <ul>
+    <li v-for="quarterback in quarterbackList">
+      {{quarterback.name}} - NFL team: {{quarterback.nflTeam}} - <input type="checkbox" v-model="quarterback.favorite" />
+    </li>
+  </ul>
+  <h2>Running Backs - {{favoriteRunningBackPercentage}}% Favorites</h2>
+  <ul>
+    <li v-for="runningBack in runningBackList">
+      {{runningBack.name}} - NFL team: {{runningBack.nflTeam}} - <input type="checkbox" v-model="runningBack.favorite" />
+    </li>
+  </ul>
+  <div>
+    <label for="newPlayer.name">New Player Name</label>
+    <input type="text" v-model="newPlayer.name" />
+    <label for="newPlayer.nflTeam">New Player NFL Team</label>
+    <input type="text" v-model="newPlayer.nflTeam" />
+    <label for="newPlayer.favorite">Favorite</label>
+    <input type="checkbox" value="true" v-model="newPlayer.favorite" />
+    <label for="newPlayer.position">Position</label>
+    <input type="radio" value="quarterback" v-model="newPlayer.position" /> Quarterback
+    <input type="radio" value="runningBack" v-model="newPlayer.position" /> Running Back
+    <button @click="addNewPlayer">Add New Player</button>
+  </div>
+  <button @click="resetFavorites()">Reset Favorites</button>
+  <pre>{{newPlayer.name}}</pre>
+  <h1>Dean's Favorite Famous Cougs</h1>
+  <h2>Quarterbacks</h2>
+  <ul>
+    <li v-for="quarterback in favoriteQuarterbackList">
+      {{quarterback.name}} - NFL team: {{quarterback.nflTeam}}
+    </li>
+  </ul>
+  <h2>Running Backs</h2>
+  <ul>
+    <li v-for="runningBack in favoriteRunningBackList">
+      {{runningBack.name}} - NFL team: {{runningBack.nflTeam}}
+    </li>
+  </ul>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp } = Vue;
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script>
-      Vue.createApp({
-        data: () => ({
-          newCharacter: {
-            name: ''
-          },
-          characterList: [
-            {
-              name: 'Aang'
-            },
-            {
-              name: 'Zuko'
-            },
-            {
-              name: 'Toph'
-            },
-            {
-              name: 'Katara'
-            }
-          ],
-          favoriteList: []
-        }),
-        methods: {
-          addNewCharacter() {
-            this.characterList.push(this.newCharacter)
-            this.newCharacter = { name: '' }
-          },
-          favoriteCharacter(character) {
-            this.favoriteList.push(character)
-          }
+  const app = createApp({
+    data: () => ({
+      newPlayer: {},
+      quarterbackList: [
+        {
+          name: 'Drew Bledsoe',
+          nflTeam: 'New England',
+          favorite: true
+        },
+        {
+          name: 'Timm Rosenbach',
+          nflTeam: 'Arizona',
+          favorite: false
+        },
+        {
+          name: 'Jack Thompson',
+          nflTeam: 'Cincinnati',
+          favorite: true
         }
-      }).mount('#app')
-    </script>
-  </body>
+      ],
+      runningBackList: [
+        {
+          name: 'Michael Black',
+          nflTeam: 'None',
+          favorite: false
+        },
+        {
+          name: 'Kerry Porter',
+          nflTeam: 'Los Angeles Raiders',
+          favorite: true
+        },
+        {
+          name: 'Reuben Mayes',
+          nflTeam: 'New Orleans',
+          favorite: true
+        }
+      ]
+    }),
+    computed: {
+      favoriteQuarterbackList() {
+        return this.getFavorites(this.quarterbackList);
+      },
+      favoriteQuarterbackPercentage() {
+        return Math.floor((this.getFavorites(this.quarterbackList).length / this.quarterbackList.length) * 100);
+      },
+      favoriteRunningBackList() {
+        return this.getFavorites(this.runningBackList);
+      },
+      favoriteRunningBackPercentage() {
+        return Math.floor((this.getFavorites(this.runningBackList).length / this.runningBackList.length) * 100);
+      }
+    },
+    methods: {
+      addNewPlayer() {
+        if ( this.newPlayer.position === 'quarterback' ) {
+          this.quarterbackList.push(this.newPlayer);
+        }
+        else {
+          this.runningBackList.push(this.newPlayer);
+        }
+        this.newPlayer = {};
+      },
+      getFavorites(playerList) {
+        return playerList.filter(function(player) { return player.favorite });
+      },
+      resetFavorites() {
+        this.quarterbackList.forEach(this.resetFavorite);
+        this.runningBackList.forEach(this.resetFavorite);
+      },
+      resetFavorite(player) {
+        player.favorite = false;
+      }
+    }
+  });
+  app.mount('#app');
+</script>
+</body>
 </html>
