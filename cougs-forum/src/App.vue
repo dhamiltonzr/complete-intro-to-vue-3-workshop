@@ -1,10 +1,12 @@
 <script>
 import AddNewPlayer from "./components/AddNewPlayer.vue";
+import BaseLayout from "./components/BaseLayout.vue";
 import FavoritePlayers from "./components/FavoritePlayers.vue";
 import FavoritePlayerPercentage from "./components/FavoritePlayerPercentage.vue";
 export default {
   components: {
     AddNewPlayer,
+    BaseLayout,
     FavoritePlayers,
     FavoritePlayerPercentage
   },
@@ -67,22 +69,28 @@ export default {
 </script>
 
 <template>
-  <h1>Famous Cougs</h1>
-  <favorite-player-percentage player-title="Quarterbacks" :player-list="quarterbackList" />
-  <ul>
-    <li v-for="quarterback in quarterbackList">
-      {{ quarterback.name }} - NFL team: {{ quarterback.nflTeam }} - <input type="checkbox"
-                                                                            v-model="quarterback.favorite"/>
-    </li>
-  </ul>
-  <favorite-player-percentage player-title="Running Backs" :player-list="runningBackList" />
-  <ul>
-    <li v-for="runningBack in runningBackList">
-      {{ runningBack.name }} - NFL team: {{ runningBack.nflTeam }} - <input type="checkbox"
-                                                                            v-model="runningBack.favorite"/>
-    </li>
-  </ul>
-  <add-new-player :new-player="newPlayer" @add-new-player="addNewPlayer()"/>
+  <base-layout>
+    <template v-slot:player-list>
+      <h1>Famous Cougs</h1>
+      <favorite-player-percentage player-title="Quarterbacks" :player-list="quarterbackList" />
+      <ul>
+        <li v-for="quarterback in quarterbackList">
+          {{ quarterback.name }} - NFL team: {{ quarterback.nflTeam }} - <input type="checkbox"
+                                                                                v-model="quarterback.favorite"/>
+        </li>
+      </ul>
+      <favorite-player-percentage player-title="Running Backs" :player-list="runningBackList" />
+      <ul>
+        <li v-for="runningBack in runningBackList">
+          {{ runningBack.name }} - NFL team: {{ runningBack.nflTeam }} - <input type="checkbox"
+                                                                                v-model="runningBack.favorite"/>
+        </li>
+      </ul>
+    </template>
+    <template v-slot:add-player>
+      <add-new-player :new-player="newPlayer" @add-new-player="addNewPlayer()"/>
+    </template>
+  </base-layout>
   <button @click="resetFavorites()">Reset Favorites</button>
   <pre>{{ newPlayer.name }}</pre>
   <h1>Dean's Favorite Famous Cougs</h1>
