@@ -1,8 +1,10 @@
 <script>
+import AddNewPlayer from "./components/AddNewPlayer.vue";
 import FavoritePlayers from "./components/FavoritePlayers.vue";
 import FavoritePlayerPercentage from "./components/FavoritePlayerPercentage.vue";
 export default {
   components: {
+    AddNewPlayer,
     FavoritePlayers,
     FavoritePlayerPercentage
   },
@@ -80,18 +82,7 @@ export default {
                                                                             v-model="runningBack.favorite"/>
     </li>
   </ul>
-  <div>
-    <label for="newPlayer.name">New Player Name</label>
-    <input type="text" v-model="newPlayer.name"/>
-    <label for="newPlayer.nflTeam">New Player NFL Team</label>
-    <input type="text" v-model="newPlayer.nflTeam"/>
-    <label for="newPlayer.favorite">Favorite</label>
-    <input type="checkbox" value="true" v-model="newPlayer.favorite"/>
-    <label for="newPlayer.position">Position</label>
-    <input type="radio" value="quarterback" v-model="newPlayer.position"/> Quarterback
-    <input type="radio" value="runningBack" v-model="newPlayer.position"/> Running Back
-    <button @click="addNewPlayer">Add New Player</button>
-  </div>
+  <add-new-player :new-player="newPlayer" @add-new-player="addNewPlayer()"/>
   <button @click="resetFavorites()">Reset Favorites</button>
   <pre>{{ newPlayer.name }}</pre>
   <h1>Dean's Favorite Famous Cougs</h1>
