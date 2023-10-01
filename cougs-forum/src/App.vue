@@ -1,5 +1,11 @@
 <script>
+import FavoritePlayers from "./components/FavoritePlayers.vue";
+import FavoritePlayerPercentage from "./components/FavoritePlayerPercentage.vue";
 export default {
+  components: {
+    FavoritePlayers,
+    FavoritePlayerPercentage
+  },
   data: () => ({
     newPlayer: {},
     quarterbackList: [
@@ -37,20 +43,6 @@ export default {
       }
     ]
   }),
-  computed: {
-    favoriteQuarterbackList() {
-      return this.getFavorites(this.quarterbackList);
-    },
-    favoriteQuarterbackPercentage() {
-      return Math.floor((this.getFavorites(this.quarterbackList).length / this.quarterbackList.length) * 100);
-    },
-    favoriteRunningBackList() {
-      return this.getFavorites(this.runningBackList);
-    },
-    favoriteRunningBackPercentage() {
-      return Math.floor((this.getFavorites(this.runningBackList).length / this.runningBackList.length) * 100);
-    }
-  },
   methods: {
     addNewPlayer() {
       if (this.newPlayer.position === 'quarterback') {
@@ -60,11 +52,6 @@ export default {
         this.runningBackList.push(this.newPlayer);
       }
       this.newPlayer = {};
-    },
-    getFavorites(playerList) {
-      return playerList.filter(function (player) {
-        return player.favorite
-      });
     },
     resetFavorites() {
       this.quarterbackList.forEach(this.resetFavorite);
@@ -79,14 +66,14 @@ export default {
 
 <template>
   <h1>Famous Cougs</h1>
-  <h2>Quarterbacks - {{ favoriteQuarterbackPercentage }}% Favorites</h2>
+  <favorite-player-percentage player-title="Quarterbacks" :player-list="quarterbackList" />
   <ul>
     <li v-for="quarterback in quarterbackList">
       {{ quarterback.name }} - NFL team: {{ quarterback.nflTeam }} - <input type="checkbox"
                                                                             v-model="quarterback.favorite"/>
     </li>
   </ul>
-  <h2>Running Backs - {{ favoriteRunningBackPercentage }}% Favorites</h2>
+  <favorite-player-percentage player-title="Running Backs" :player-list="runningBackList" />
   <ul>
     <li v-for="runningBack in runningBackList">
       {{ runningBack.name }} - NFL team: {{ runningBack.nflTeam }} - <input type="checkbox"
@@ -108,17 +95,7 @@ export default {
   <button @click="resetFavorites()">Reset Favorites</button>
   <pre>{{ newPlayer.name }}</pre>
   <h1>Dean's Favorite Famous Cougs</h1>
-  <h2>Quarterbacks</h2>
-  <ul>
-    <li v-for="(quarterback, index) in favoriteQuarterbackList" :key="`fav-qb-${index}`">
-      {{ quarterback.name }} - NFL team: {{ quarterback.nflTeam }}
-    </li>
-  </ul>
-  <h2>Running Backs</h2>
-  <ul>
-    <li v-for="(runningBack, index) in favoriteRunningBackList" :key="`fav-rb-${index}`">
-      {{ runningBack.name }} - NFL team: {{ runningBack.nflTeam }}
-    </li>
-  </ul>
+  <favorite-players player-type="qb" player-title="Quarterbacks" :player-list="quarterbackList" />
+  <favorite-players player-type="rb" player-title="Running Backs" :player-list="runningBackList" />
 </template>
 
