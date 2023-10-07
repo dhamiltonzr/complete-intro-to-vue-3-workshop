@@ -39,7 +39,12 @@ export default {
   </header>
   <HomePage v-if="currentPage === 'Home'" />
   <LoginPage v-else-if="currentPage === 'Login'" />
-  <UsersPage v-else-if="currentPage === 'Users'" />
+  <Suspense v-else-if="currentPage === 'Users'">
+    <UsersPage />
+    <template v-slot:fallback>
+      Loading users...
+    </template>
+  </Suspense>
 </template>
 
 <style>
