@@ -1,34 +1,24 @@
 <template>
-  <h2>{{usersCountLabel}} {{this.usersCount}}</h2>
-  <ul>
-    <li v-for="user in this.users">
-      {{user.id}} - {{user.firstname}} {{user.lastname}}
-    </li>
-  </ul>
+  <users-counter :users-count-label="`Users Page Count`" />
+  <users-list />
   <button @click="removeLastUser">Remove Last User</button>
 </template>
-<script setup>
-import {computed,ref} from "vue";
+<script>
+import {users} from "../composables/userStore";
+import UsersCounter from "./UsersCounter.vue";
+import UsersList from "./UsersList.vue";
 
-const initialUsers = await fetch('https://jsonplaceholder.org/users')
-  .then(response => response.json())
-  .catch(error => [{id: 1, firstname: 'Error', lastname: `${JSON.stringify(error)}`}]);
-const users = ref(initialUsers);
-const usersCount = computed(() => {
-    return users.value.length;
+export default {
+  components: {
+    UsersCounter,
+    UsersList
+  },
+  methods: {
+    removeLastUser: () => {
+      if (users && users.value && users.value.length > 0) {
+        users.value.pop();
+      }
+    }
   }
-);
-defineProps({
-  usersCountLabel: {
-    type: String,
-    default: 'Users Count',
-    required: false
-  }
-
-});
-const removeLastUser = () => {
-  if (users && users.value && users.value.length > 0) {
-    users.value.pop();
-  }
-};
+}
 </script>

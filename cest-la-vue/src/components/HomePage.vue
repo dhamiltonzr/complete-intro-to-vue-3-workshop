@@ -1,5 +1,3 @@
-<script></script>
-
 <template>
   <main>
     <h1>Welcome to <br />C'est La Vue</h1>
@@ -7,9 +5,19 @@
       This is a place to manage various things: todos, users, posts, etc.
       Whatever your mind desires!
     </p>
+    <users-counter :users-count-label="`Home Users Count`" />
   </main>
 </template>
 
+<script>
+import UsersCounter from "./UsersCounter.vue";
+
+export default {
+  components: {
+    UsersCounter
+  }
+}
+</script>
 <style>
 main {
   display: flex;
