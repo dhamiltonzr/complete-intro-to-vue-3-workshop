@@ -3,7 +3,7 @@ import { userList } from "../composables/useUserStore";
 import { computed } from "vue";
 
 const shortUserList = computed(() => {
-  return userList.value.splice(0, 5);
+  return userList.value.slice(0, 5);
 });
 </script>
 

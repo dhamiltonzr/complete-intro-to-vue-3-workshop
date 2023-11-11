@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <li :class="$style['user-card']">{{ user.name }}: {{ user.website }}</li>
+  <li :class="$style['user-card']">{{ user.name }}: {{ user.website }} - <router-link :to="`/user/${user.id}`" >Details</router-link></li>
 </template>
 
 <style module>

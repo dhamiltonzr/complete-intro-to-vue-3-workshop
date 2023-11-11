@@ -11,5 +11,9 @@ export const routes = [
   {
     path: '/users',
     component: () => import('./views/UserPage.vue')
+  },
+  {
+    path: '/user/:id',
+    component: () => import('./views/UserDetailsPage.vue')
   }
 ]
